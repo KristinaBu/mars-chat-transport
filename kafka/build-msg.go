@@ -9,7 +9,10 @@ import (
 
 type Storage map[time.Time]entities.Message
 
-var storage = Storage{}
+var (
+	storage = Storage{}
+	mu      = &sync.Mutex{} // Общий мьютекс
+)
 
 func addMessage(segment entities.Segment) {
 	storage[segment.SendTime] = entities.Message{
@@ -23,7 +26,6 @@ func addMessage(segment entities.Segment) {
 
 func AddSegment(segment entities.Segment) {
 	// используем мьютекс, чтобы избежать конкуретного доступа к хранилищу
-	mu := &sync.Mutex{}
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -54,7 +56,6 @@ func getMessageText(sendTime time.Time) string {
 type sendFunc func(body entities.ReceiveRequest)
 
 func ScanStorage(sender sendFunc) {
-	mu := &sync.Mutex{}
 	mu.Lock()
 	defer mu.Unlock()
 

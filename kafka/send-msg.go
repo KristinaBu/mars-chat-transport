@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-const CodeUrl = "http://192.168.123.120:8000/code" // адрес канального уровня
+const CodeUrl = "http://172.20.10.5:3050/code" // адрес канального уровня
 
 func SplitMessage(payload string, segmentSize int) []string {
 	result := make([]string, 0)
@@ -27,17 +27,22 @@ func SplitMessage(payload string, segmentSize int) []string {
 
 func SendSegment(body entities.Segment) {
 	reqBody, _ := json.Marshal(body)
+	fmt.Printf("Отправка на канальный: %s\n", string(reqBody))
 
 	req, _ := http.NewRequest("POST", CodeUrl, bytes.NewBuffer(reqBody))
 	req.Header.Add("Content-Type", "application/json")
 
 	client := &http.Client{}
+	fmt.Printf("SendSegment: %+v\n", body)
 	resp, err := client.Do(req)
 	if err != nil {
+		fmt.Printf("ОШИБКА отправки на канальный: %v\n", err)
 		return
 	}
+	fmt.Printf("Ответ канального: %d\n", resp.StatusCode)
 
 	defer resp.Body.Close()
+
 }
 
 func HandleSend(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +62,7 @@ func HandleSend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+	fmt.Printf("Send!!!", message)
 
 	// разбиваем текст сообщения на сегменты
 	segments := SplitMessage(message.Text, entities.SegmentSize)
@@ -88,6 +94,6 @@ func SendReceiveRequest(body entities.ReceiveRequest) {
 	if err != nil {
 		return
 	}
-
+	fmt.Printf("Прикладной!!!")
 	defer resp.Body.Close()
 }

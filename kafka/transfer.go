@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"mars-chat-transport/entities"
 	"net/http"
@@ -28,6 +29,7 @@ func HandleTransfer(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	fmt.Printf("Канальный!!!")
 
 	w.WriteHeader(http.StatusOK)
 }

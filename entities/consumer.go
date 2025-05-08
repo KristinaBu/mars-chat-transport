@@ -3,7 +3,7 @@ package entities
 import "time"
 
 const SegmentSize = 100
-const ReceiveUrl = "http://hohoho:3000/receive" // адрес websocket-сервера прикладного уровня
+const ReceiveUrl = "http://172.20.10.4:8010/receive" // адрес websocket-сервера прикладного уровня
 
 type SendRequest struct {
 	Id       int       `json:"id,omitempty"`
@@ -30,7 +30,7 @@ type Message struct {
 
 const (
 	SegmentLostError = "lost"
-	KafkaReadPeriod  = 2 * time.Second
+	KafkaReadPeriod  = 10 * time.Second
 )
 
 // структура тела запроса на прикладной уровень
