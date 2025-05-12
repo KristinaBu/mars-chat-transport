@@ -20,7 +20,7 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
-
+	// проверяет, собирает сегменты в сообщение
 	go func() {
 		ticker := time.NewTicker(entities.KafkaReadPeriod)
 		defer ticker.Stop()

@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-const CodeUrl = "http://172.20.10.5:3050/code" // адрес канального уровня
+const CodeUrl = "http://172.20.10.6:3050/code" // адрес канального уровня
 
 func SplitMessage(payload string, segmentSize int) []string {
 	result := make([]string, 0)
